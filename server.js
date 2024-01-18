@@ -25,8 +25,8 @@ let dog;
 const server = http.createServer((req, res) => {
   console.log(`${req.method} ${req.url}`);
 
-  if (req.method === "GET" && req.url.startsWith('/assets')) {
-    const assetPath = req.url.split("/assets")[1];
+    if (req.method === "GET" && req.url.startsWith('/assets')) {
+      const assetPath = req.url.split("/assets")[1];
     try {
       const resBody = fs.readFileSync("./assets" + assetPath);
       res.statusCode = 200;
@@ -106,7 +106,23 @@ const server = http.createServer((req, res) => {
       console.log(req.body);
     }
 
-    // Your code here
+      // Your code here
+      // POST /cat
+      if (req.method === 'POST' && req.url === '/cat') {
+	  cat = new Cat(req.body);
+	  res.statusCode = 302;
+	  res.setHeader('Location', '/');
+	  res.end();
+	  return;
+      }
+
+      // POST /dog
+      if (req.method === 'POST' && req.url === '/dog') {
+	  dog = new Dog(req.body);
+	  res.statusCode = 302;
+	  res.setHeader('Location', '/');
+	  return res.end();
+      }
 
     res.statusCode = 404;
     res.end("Page Not Found");
